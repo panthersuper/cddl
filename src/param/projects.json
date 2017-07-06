@@ -1,6 +1,15 @@
 [
 
-
+{
+    "title":"HYPER LOCAL",
+    "pageurl":"projects/HYPER LOCAL/index.html",
+    "iconurl":"projects/HYPER LOCAL/thumb.png"
+},
+{
+    "title":"GLOBAL NETWORK MAPPING TRANSIT",
+    "pageurl":"projects/GLOBAL NETWORK MAPPING TRANSIT/index.html",
+    "iconurl":"projects/GLOBAL NETWORK MAPPING TRANSIT/thumb.png"
+},
 {
     "title":"ATLAS OF LIGHTING",
     "pageurl":"projects/ATLAS OF LIGHTING/index.html",

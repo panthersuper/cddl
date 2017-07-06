@@ -49,13 +49,30 @@ MyUI.prototype = {
                 event.preventDefault();
 
                 console.log(window.initsection);
+                let [section,thisid] = window.initsection.split("/");
+
+                console.log(section);
+
+
                 $('html, body').stop().animate({
-                    scrollTop: $("#"+window.initsection).offset().top - 80
+                    scrollTop: $("#"+section).offset().top - 80
                 }, {
                         duration: 100,
                         complete: function() {
                         }
                     });
+
+                if(thisid){
+                    let link = window.initsection+"/index.html"
+
+                    if(section == "news") window.mytest.expandNews(link);
+                    if(section == "projects") window.mytest.expandProj(link);
+                    if(section == "courses") window.mytest.expandCourse(link);
+
+                }   
+
+
+
             }
 
         });
@@ -119,65 +136,59 @@ MyUI.prototype = {
 
 
         $(".expand_proj").click(function () {
+            let mylink = d3.select(this).attr("mylink");
+            var thisid = mylink.split("/index.html")[0];
+            window.location.href = window.location.href.split("#")[0]+"#"+thisid;
 
-            $(".expanded_proj .holder").empty();
-            d3.select(".expanded_proj .holder").append("iframe")
-                .attr("src", d3.select(this).attr("mylink"))
-                .attr("id", "iframe_proj");
-            
-            
-
-            $("#iframe_proj").load(function () {
-                $(".expanded_proj").css("opacity", 1);
-                $(".expanded_proj").css("height", 0);
-
-                window.mytest.fixiframe('#iframe_proj');
-
-                func.expand_function("iframe_proj", $(".expanded_proj"));
-
-            });
-
-            $('html, body').stop().animate({
-                scrollTop: $(".expanded_proj").offset().top - 80
-            }, 1000);
-
+            window.mytest.expandProj(mylink);
         });
 
+
+
+
         $(".expanded_proj .close_expanded").click(function () {
+            window.location.href = window.location.href.split("#")[0]+"#projects";
+
             $(".expanded_proj .holder").empty();
             $(".expanded_proj").css("height", 0);
             $(".expanded_proj").css("opacity", 0);
         });
 
         $(".expand_course").click(function () {
-            $(".expanded_course").css("opacity", 1);
-            $(".expanded_course").css("height", 0);
-            $(".expanded_course .holder").empty();
-            d3.select(".expanded_course .holder").append("iframe")
-                .attr("src", d3.select(this).attr("mylink"))
-                .attr("id", "iframe_course");
-
-            $("#iframe_course").load(function () {
-                $(".expanded_course").css("opacity", 1);
-                window.mytest.fixiframe('#iframe_course');
-
-                func.expand_function("iframe_course", $(".expanded_course"));
-            });
-
-            $('html, body').stop().animate({
-                scrollTop: $(".expanded_course").offset().top - 80
-            }, 1000);
-
+            let mylink = d3.select(this).attr("mylink");
+            var thisid = mylink.split("/index.html")[0];
+            window.location.href = window.location.href.split("#")[0]+"#"+thisid;
+            window.mytest.expandCourse(mylink);
         });
 
-        
 
         $(".expanded_course .close_expanded").click(function () {
+            window.location.href = window.location.href.split("#")[0]+"#courses";
+
             $(".expanded_course .holder").empty();
             $(".expanded_course").css("height", 0);
             $(".expanded_course").css("opacity", 0);
 
         });
+
+        $(".expand_news").click(function () {
+            let mylink = d3.select(this).attr("mylink");
+            var thisid = mylink.split("/index.html")[0];
+            window.location.href = window.location.href.split("#")[0]+"#"+thisid;
+            window.mytest.expandNews(mylink);
+
+        });
+
+
+        $(".expanded_news .close_expanded").click(function () {
+            window.location.href = window.location.href.split("#")[0]+"#news";
+
+            $(".expanded_news .holder").empty();
+            $(".expanded_news").css("height", 0);
+            $(".expanded_news").css("opacity", 0);
+
+        });
+
 
         $(".pop_team").click(function () {
             //console.log($(this).attr("bio1"));
@@ -272,50 +283,50 @@ MyUI.prototype = {
             
         });
 
-        $(".news_item").click(function (e) {
+        // $(".news_item").click(function (e) {
 
-            if($(e.target).attr("class").indexOf("close_expanded")==-1){
-                d3.selectAll(".news_item").select(".insider").classed("tohide",false);
-                d3.selectAll(".news_item").select(".news_content").remove();
-                d3.selectAll(".news_item").select(".close_expanded").remove();
+        //     if($(e.target).attr("class").indexOf("close_expanded")==-1){
+        //         d3.selectAll(".news_item").select(".insider").classed("tohide",false);
+        //         d3.selectAll(".news_item").select(".news_content").remove();
+        //         d3.selectAll(".news_item").select(".close_expanded").remove();
 
-                var mythis = d3.select(this);
-                mythis.select(".insider").classed("tohide",true);
-                mythis.append("img").attr("src","img/thex.png").attr("class","close_expanded");
+        //         var mythis = d3.select(this);
+        //         mythis.select(".insider").classed("tohide",true);
+        //         mythis.append("img").attr("src","img/thex.png").attr("class","close_expanded");
 
-                mythis.append("div").attr("class","news_content");
+        //         mythis.append("div").attr("class","news_content");
 
-                $(".news_content").empty();
+        //         $(".news_content").empty();
 
-                console.log(mythis.attr("pageurl"));
-
-
-                d3.select(".news_content").append("iframe")
-                    .attr("src", mythis.attr("pageurl"))
-                    .attr("id", "iframe_news");
-
-                $("#iframe_news").load(function () {
-
-                    window.mytest.fixiframe('#iframe_news');
-
-                    func.expand_function("iframe_news", $(".news_content"));
-                });
+        //         console.log(mythis.attr("pageurl"));
 
 
-                $('html, body').stop().animate({
-                    scrollTop: $(".news_content").offset().top - 80
-                }, 1000);
+        //         d3.select(".news_content").append("iframe")
+        //             .attr("src", mythis.attr("pageurl"))
+        //             .attr("id", "iframe_news");
 
-            }
+        //         $("#iframe_news").load(function () {
 
-            $(".news_item .close_expanded").click(function(){
-                mythis.select(".insider").classed("tohide",false);
-                mythis.select(".news_content").remove();
-                d3.select(this).remove();
-            });
+        //             window.mytest.fixiframe('#iframe_news');
+
+        //             func.expand_function("iframe_news", $(".news_content"));
+        //         });
 
 
-        })
+        //         $('html, body').stop().animate({
+        //             scrollTop: $(".news_content").offset().top - 80
+        //         }, 1000);
+
+        //     }
+
+        //     $(".news_item .close_expanded").click(function(){
+        //         mythis.select(".insider").classed("tohide",false);
+        //         mythis.select(".news_content").remove();
+        //         d3.select(this).remove();
+        //     });
+
+
+        // })
 
         d3.selectAll(".tm_wrapper .icon_over").on("mouseover", function () {
             d3.select(this).style("opacity", 0.6);
@@ -477,6 +488,8 @@ MyUI.prototype = {
                         .attr("class", "timeline_content to_right " + color_flag);
                 }
 
+                var dltext = "Click Here";
+                var dllink = dltext.link(dd.url);
                 timelinecontent.append("p").text(dd.title).attr("class", "titled");
                 timelinecontent.append("p").text("").style("opacity", "0").style("height", "0").attr("class", "addition")
                     .html("<span>By:</span> " + dd.authors);
@@ -484,6 +497,11 @@ MyUI.prototype = {
                     .html("<span>In:</span> " + dd.where);
                 timelinecontent.append("p").text("").style("opacity", "0").style("height", "0").attr("class", "addition")
                     .html("<span>Type:</span> " + dd.type);
+                if (dd.url !== "") {
+                timelinecontent.append("p").text("").style("opacity", "0").style("height", "0").attr("class", "addition")
+                    .html("<span>Download:</span> " + dllink);
+                }	else {}
+
 
                 timelinecontent.on("mouseover", function () {
 
@@ -529,7 +547,7 @@ MyUI.prototype = {
     },
 
     loadProjectLst: function (data) {
-        var contentholder = d3.select("#project_cont");
+        var contentholder = d3.select("#projects_cont");
 
         data.forEach(function (d) {
 
@@ -542,7 +560,7 @@ MyUI.prototype = {
     },
 
     loadCourseLst: function (data) {
-        var contentholder = d3.select("#course_cont");
+        var contentholder = d3.select("#courses_cont");
 
         data.forEach(function (d) {
 
@@ -636,24 +654,31 @@ MyUI.prototype = {
     },
 
     loadNewsLst: function (data) {
-        var contentholder = d3.select(".news_section");
+        // var contentholder = d3.select(".news_section");
 
+        // data.forEach(function(d){
+        //     var news_item = contentholder.append("div").attr("class","news_item").attr("pageurl",d.pageurl);
+        //     var insider_news = news_item.append("div").attr("class","insider");
+        //     var imgwrapper = insider_news.append("div").attr("class","col-sm-3 new_imgwrapper");
+        //     imgwrapper.append("img").attr("class","news_img").attr("src",d.iconurl);
 
+        //     var right_section = insider_news.append("div").attr("class","col-sm-9 section_left");
+        //     right_section.append("div").attr("class","news_title").text(d.title);
+        //     right_section.append("div").attr("class","news_indication").text("read more...");
+        //     right_section.append("div").attr("class","news_time").text(d.time);
 
-        data.forEach(function(d){
-            var news_item = contentholder.append("div").attr("class","news_item").attr("pageurl",d.pageurl);
-            var insider_news = news_item.append("div").attr("class","insider");
-            var imgwrapper = insider_news.append("div").attr("class","col-sm-3 new_imgwrapper");
-            imgwrapper.append("img").attr("class","news_img").attr("src",d.iconurl);
+        // })
 
-            var right_section = insider_news.append("div").attr("class","col-sm-9 section_left");
-            right_section.append("div").attr("class","news_title").text(d.title);
-            right_section.append("div").attr("class","news_indication").text("read more...");
-            right_section.append("div").attr("class","news_time").text(d.time);
+        var contentholder = d3.select("#news_cont");
 
+        data.forEach(function (d) {
 
-
-        })
+            var h1 = contentholder.append("div").attr("class", "col-sm-3 project_icon");
+            var h2 = h1.append("div").attr("class", "project_over");
+            h2.append("img").attr("src", "img/plus.png").attr("class", "icon_plus expand_news mybtn").attr("mylink", d.pageurl);
+            h2.append("p").attr("class", "project_title").text(d.title);
+            h1.append("img").attr("src", d.iconurl).attr("class", "proj_icon")
+        });
 
 
     },
@@ -664,7 +689,7 @@ MyUI.prototype = {
         $(myid).contents().find("a")
             .attr("target","_blank")
             .attr("href", function(d,dd){
-                console.log(d,dd);
+                //console.log(d,dd);
                 if(dd){
                     var out = dd;
                     if(out.indexOf("?q=")>-1)
@@ -742,5 +767,74 @@ MyUI.prototype = {
             $(".desktop_display").removeClass("tohide");
             $(".mobile_display").addClass("tohide");
         }
+    },
+
+    expandCourse : function(mylink){
+
+        $(".expanded_course").css("opacity", 1);
+        $(".expanded_course").css("height", 0);
+        $(".expanded_course .holder").empty();
+        d3.select(".expanded_course .holder").append("iframe")
+            .attr("src", mylink)
+            .attr("id", "iframe_course");
+
+        $("#iframe_course").load(function () {
+            $(".expanded_course").css("opacity", 1);
+            window.mytest.fixiframe('#iframe_course');
+            func.expand_function("iframe_course", $(".expanded_course"));
+
+            $('html, body').stop().animate({
+                scrollTop: $(".expanded_course").offset().top - 80
+            }, 1000);
+
+        });
+
+
+    },
+
+    expandProj : function(mylink){
+        $(".expanded_proj .holder").empty();
+        d3.select(".expanded_proj .holder").append("iframe")
+            .attr("src", mylink)
+            .attr("id", "iframe_proj");
+        
+        $("#iframe_proj").load(function () {
+            $(".expanded_proj").css("opacity", 1);
+            $(".expanded_proj").css("height", 0);
+
+            window.mytest.fixiframe('#iframe_proj');
+
+            func.expand_function("iframe_proj", $(".expanded_proj"));
+
+            $('html, body').stop().animate({
+                scrollTop: $(".expanded_proj").offset().top - 80
+            }, 1000);
+
+        });
+
+    },
+
+    expandNews : function(mylink){
+        $(".expanded_news").css("opacity", 1);
+        $(".expanded_news").css("height", 0);
+        $(".expanded_news .holder").empty();
+        d3.select(".expanded_news .holder").append("iframe")
+            .attr("src", mylink)
+            .attr("id", "iframe_news");
+
+        $("#iframe_news").load(function () {
+            $(".expanded_news").css("opacity", 1);
+            window.mytest.fixiframe('#iframe_news');
+
+            func.expand_function("iframe_news", $(".expanded_news"));
+
+            $('html, body').stop().animate({
+                scrollTop: $(".expanded_news").offset().top - 80
+            }, 1000);
+
+        });
+
     }
+
+
 }
